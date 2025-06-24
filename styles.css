@@ -528,7 +528,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: url('real images/about.jpg') center center/cover no-repeat;
+    background: url('./real images/about.jpg') center center/cover no-repeat;
     opacity: 0.08; /* Lower opacity as requested */
     mix-blend-mode: lighten;
     pointer-events: none;
@@ -653,7 +653,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: url('real images/contact.jpg') center center/cover no-repeat;
+    background: url('./real images/contact.jpg') center center/cover no-repeat;
     opacity: 0.13;
     mix-blend-mode: lighten;
     pointer-events: none;
@@ -1677,7 +1677,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: url('real images/featured products.png') center center/cover no-repeat;
+    background: url('./real images/featured products.png') center center/cover no-repeat;
     opacity: 0.13;
     mix-blend-mode: lighten;
     pointer-events: none;
@@ -1929,7 +1929,7 @@ img:hover {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: url('real images/hero.jpg') center center/cover no-repeat;
+    background: url('./real images/hero.jpg') center center/cover no-repeat;
     opacity: 0.13;
     mix-blend-mode: lighten;
     pointer-events: none;
@@ -1948,7 +1948,7 @@ img:hover {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: url('real images/products.png') center center/cover no-repeat;
+    background: url('./real images/products.png') center center/cover no-repeat;
     opacity: 0.13;
     mix-blend-mode: lighten;
     pointer-events: none;
