@@ -516,27 +516,32 @@ window.addEventListener('DOMContentLoaded', () => {
         if (isTransitioning) return;
         isTransitioning = true;
         if (window.innerWidth <= 600) {
-            // Mobile: fade out, update, fade in
+            // Mobile: slide left
             const card = grid.firstChild;
             if (card) {
-                card.style.transition = 'opacity 0.3s';
-                card.style.opacity = '0';
+                card.style.transition = 'transform 0.4s cubic-bezier(.19,1,.22,1), opacity 0.4s';
+                card.style.transform = 'translateX(-100vw)';
+                card.style.opacity = '0.2';
             }
             setTimeout(() => {
                 current = (current + 1) % brands.length;
                 render(false);
                 const newCard = grid.firstChild;
                 if (newCard) {
-                    newCard.style.opacity = '0';
+                    newCard.style.transform = 'translateX(100vw)';
+                    newCard.style.opacity = '0.2';
                     setTimeout(() => {
-                        newCard.style.transition = 'opacity 0.3s';
+                        newCard.style.transition = 'transform 0.4s cubic-bezier(.19,1,.22,1), opacity 0.4s';
+                        newCard.style.transform = 'translateX(0)';
                         newCard.style.opacity = '1';
-                        isTransitioning = false;
+                        setTimeout(() => {
+                            isTransitioning = false;
+                        }, 400);
                     }, 10);
                 } else {
                     isTransitioning = false;
                 }
-            }, 300);
+            }, 400);
         } else {
             // Desktop/tablet: slide
             grid.style.transition = 'transform 0.5s cubic-bezier(.19,1,.22,1)';
@@ -553,27 +558,32 @@ window.addEventListener('DOMContentLoaded', () => {
         if (isTransitioning) return;
         isTransitioning = true;
         if (window.innerWidth <= 600) {
-            // Mobile: fade out, update, fade in
+            // Mobile: slide right
             const card = grid.firstChild;
             if (card) {
-                card.style.transition = 'opacity 0.3s';
-                card.style.opacity = '0';
+                card.style.transition = 'transform 0.4s cubic-bezier(.19,1,.22,1), opacity 0.4s';
+                card.style.transform = 'translateX(100vw)';
+                card.style.opacity = '0.2';
             }
             setTimeout(() => {
                 current = (current - 1 + brands.length) % brands.length;
                 render(false);
                 const newCard = grid.firstChild;
                 if (newCard) {
-                    newCard.style.opacity = '0';
+                    newCard.style.transform = 'translateX(-100vw)';
+                    newCard.style.opacity = '0.2';
                     setTimeout(() => {
-                        newCard.style.transition = 'opacity 0.3s';
+                        newCard.style.transition = 'transform 0.4s cubic-bezier(.19,1,.22,1), opacity 0.4s';
+                        newCard.style.transform = 'translateX(0)';
                         newCard.style.opacity = '1';
-                        isTransitioning = false;
+                        setTimeout(() => {
+                            isTransitioning = false;
+                        }, 400);
                     }, 10);
                 } else {
                     isTransitioning = false;
                 }
-            }, 300);
+            }, 400);
         } else {
             // Desktop/tablet: slide
             grid.style.transition = 'transform 0.5s cubic-bezier(.19,1,.22,1)';

@@ -381,14 +381,27 @@ body {
 }
 
 .product-link {
-    color: var(--light-blue);
+    display: inline-block;
+    background: var(--light-blue);
+    color: var(--dark-blue);
+    font-weight: 700;
+    padding: 0.9rem 2.2rem;
+    border-radius: 30px;
+    font-size: 1.1rem;
     text-decoration: none;
-    font-weight: 600;
-    transition: var(--transition);
+    margin-top: 1.2rem;
+    box-shadow: 0 4px 16px rgba(124,179,222,0.10);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+    border: none;
+    outline: none;
+    cursor: pointer;
 }
 
 .product-link:hover {
+    background: var(--accent-blue);
     color: var(--white);
+    box-shadow: 0 8px 32px rgba(74,144,226,0.18);
+    transform: translateY(-2px) scale(1.04);
 }
 
 /* Brand Showcase Section */
@@ -1230,6 +1243,14 @@ body {
     .whatsapp-cta {
         display: inline !important;
         font-size: 0.85rem;
+    }
+
+    .product-link {
+        color: var(--dark-blue);
+    }
+
+    .product-link:hover {
+        color: var(--white);
     }
 }
 
