@@ -1250,12 +1250,12 @@ body {
     }
 
     .oppo-logo, .samsung-logo, .oneplus-logo, .realme-logo {
-        width: 90% !important;
-        height: 90% !important;
-        max-width: 180px !important;
-        max-height: 180px !important;
-        min-width: 90px !important;
-        min-height: 90px !important;
+        width: 100vw !important;
+        height: 100vw !important;
+        max-width: 400px !important;
+        max-height: 400px !important;
+        min-width: 120px !important;
+        min-height: 120px !important;
     }
 }
 
@@ -1356,12 +1356,12 @@ body {
     }
 
     .oppo-logo, .samsung-logo, .oneplus-logo, .realme-logo {
-        width: 100% !important;
-        height: 100% !important;
-        max-width: 140px !important;
-        max-height: 140px !important;
-        min-width: 70px !important;
-        min-height: 70px !important;
+        width: 98vw !important;
+        height: 98vw !important;
+        max-width: 260px !important;
+        max-height: 260px !important;
+        min-width: 90px !important;
+        min-height: 90px !important;
     }
 }
 
@@ -1574,4 +1574,40 @@ body {
     max-height: 220px !important;
     min-width: 120px !important;
     min-height: 120px !important;
+}
+
+.oneplus-logo, .realme-logo {
+    width: 120vw !important;
+    height: 120vw !important;
+    max-width: 600px !important;
+    max-height: 600px !important;
+    min-width: 180px !important;
+    min-height: 180px !important;
+    margin: 0 auto 0.5rem auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+}
+
+@media (max-width: 768px) {
+    .oneplus-logo, .realme-logo {
+        width: 100vw !important;
+        height: 100vw !important;
+        max-width: 400px !important;
+        max-height: 400px !important;
+        min-width: 120px !important;
+        min-height: 120px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .oneplus-logo, .realme-logo {
+        width: 98vw !important;
+        height: 98vw !important;
+        max-width: 260px !important;
+        max-height: 260px !important;
+        min-width: 90px !important;
+        min-height: 90px !important;
+    }
 } 
