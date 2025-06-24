@@ -1457,22 +1457,40 @@ body {
         overflow-x: visible;
     }
     .brands-grid {
-        gap: 0.2rem;
-        padding-bottom: 0.2rem;
-        margin-left: 8vw;
-        margin-right: 8vw;
+        gap: 0;
+        margin: 0;
+        padding: 0;
+        justify-content: center;
+        align-items: center;
     }
     .brand-card {
-        min-width: 70vw;
-        max-width: 75vw;
-        padding: 0.4rem;
-        margin: 0 0.2rem;
+        min-width: 90vw;
+        max-width: 95vw;
+        margin: 0 auto;
+        padding: 1.2rem 0.5rem;
         box-sizing: border-box;
+        border-radius: 18px;
+        font-size: 1rem;
+        box-shadow: 0 4px 24px rgba(19,62,135,0.10);
+    }
+    .brand-card.peek {
+        display: none !important;
+    }
+    .brand-card.center {
+        display: block;
     }
     .brand-logo {
-        width: 24px;
-        height: 24px;
-        padding: 0.2rem;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+    }
+    .brand-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+    .brand-content p {
+        font-size: 0.95rem;
+        line-height: 1.4;
     }
 }
 

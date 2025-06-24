@@ -482,49 +482,111 @@ window.addEventListener('DOMContentLoaded', () => {
     let current = 0;
     let interval;
     let isTransitioning = false;
-    // Render 3 cards: prev, current, next
+    // Render function: 1 card for mobile, 3 for desktop
     function render(peekTransition = false) {
         grid.innerHTML = '';
-        const prevIdx = (current - 1 + brands.length) % brands.length;
-        const nextIdx = (current + 1) % brands.length;
-        const prevCard = createBrandCard(brands[prevIdx], 'peek');
-        const currCard = createBrandCard(brands[current], 'center');
-        const nextCard = createBrandCard(brands[nextIdx], 'peek');
-        grid.appendChild(prevCard);
-        grid.appendChild(currCard);
-        grid.appendChild(nextCard);
-        grid.style.display = 'flex';
-        grid.style.justifyContent = 'center';
-        grid.style.alignItems = 'center';
-        grid.style.transition = peekTransition ? 'transform 0.5s cubic-bezier(.19,1,.22,1)' : 'none';
-        grid.style.transform = 'translateX(-33.33%)';
+        if (window.innerWidth <= 600) {
+            // Mobile: show only one card
+            const currCard = createBrandCard(brands[current], 'center');
+            grid.appendChild(currCard);
+            grid.style.display = 'flex';
+            grid.style.justifyContent = 'center';
+            grid.style.alignItems = 'center';
+            grid.style.transition = peekTransition ? 'transform 0.5s cubic-bezier(.19,1,.22,1)' : 'none';
+            grid.style.transform = 'translateX(0)';
+        } else {
+            // Desktop/tablet: show 3 cards (peek style)
+            const prevIdx = (current - 1 + brands.length) % brands.length;
+            const nextIdx = (current + 1) % brands.length;
+            const prevCard = createBrandCard(brands[prevIdx], 'peek');
+            const currCard = createBrandCard(brands[current], 'center');
+            const nextCard = createBrandCard(brands[nextIdx], 'peek');
+            grid.appendChild(prevCard);
+            grid.appendChild(currCard);
+            grid.appendChild(nextCard);
+            grid.style.display = 'flex';
+            grid.style.justifyContent = 'center';
+            grid.style.alignItems = 'center';
+            grid.style.transition = peekTransition ? 'transform 0.5s cubic-bezier(.19,1,.22,1)' : 'none';
+            grid.style.transform = 'translateX(-33.33%)';
+        }
     }
     // Animate to next card
     function slideNext() {
         if (isTransitioning) return;
         isTransitioning = true;
-        grid.style.transition = 'transform 0.5s cubic-bezier(.19,1,.22,1)';
-        grid.style.transform = 'translateX(-66.66%)';
-        setTimeout(() => {
-            current = (current + 1) % brands.length;
-            render(false);
-            isTransitioning = false;
-        }, 500);
+        if (window.innerWidth <= 600) {
+            // Mobile: fade out, update, fade in
+            const card = grid.firstChild;
+            if (card) {
+                card.style.transition = 'opacity 0.3s';
+                card.style.opacity = '0';
+            }
+            setTimeout(() => {
+                current = (current + 1) % brands.length;
+                render(false);
+                const newCard = grid.firstChild;
+                if (newCard) {
+                    newCard.style.opacity = '0';
+                    setTimeout(() => {
+                        newCard.style.transition = 'opacity 0.3s';
+                        newCard.style.opacity = '1';
+                        isTransitioning = false;
+                    }, 10);
+                } else {
+                    isTransitioning = false;
+                }
+            }, 300);
+        } else {
+            // Desktop/tablet: slide
+            grid.style.transition = 'transform 0.5s cubic-bezier(.19,1,.22,1)';
+            grid.style.transform = 'translateX(-66.66%)';
+            setTimeout(() => {
+                current = (current + 1) % brands.length;
+                render(false);
+                isTransitioning = false;
+            }, 500);
+        }
     }
     // Animate to previous card
     function slidePrev() {
         if (isTransitioning) return;
         isTransitioning = true;
-        grid.style.transition = 'transform 0.5s cubic-bezier(.19,1,.22,1)';
-        grid.style.transform = 'translateX(0%)';
-        setTimeout(() => {
-            current = (current - 1 + brands.length) % brands.length;
-            render(false);
-            isTransitioning = false;
-        }, 500);
+        if (window.innerWidth <= 600) {
+            // Mobile: fade out, update, fade in
+            const card = grid.firstChild;
+            if (card) {
+                card.style.transition = 'opacity 0.3s';
+                card.style.opacity = '0';
+            }
+            setTimeout(() => {
+                current = (current - 1 + brands.length) % brands.length;
+                render(false);
+                const newCard = grid.firstChild;
+                if (newCard) {
+                    newCard.style.opacity = '0';
+                    setTimeout(() => {
+                        newCard.style.transition = 'opacity 0.3s';
+                        newCard.style.opacity = '1';
+                        isTransitioning = false;
+                    }, 10);
+                } else {
+                    isTransitioning = false;
+                }
+            }, 300);
+        } else {
+            // Desktop/tablet: slide
+            grid.style.transition = 'transform 0.5s cubic-bezier(.19,1,.22,1)';
+            grid.style.transform = 'translateX(0%)';
+            setTimeout(() => {
+                current = (current - 1 + brands.length) % brands.length;
+                render(false);
+                isTransitioning = false;
+            }, 500);
+        }
     }
     function startCarousel() {
-        interval = setInterval(slideNext, window.innerWidth < 600 ? 1500 : 2000);
+        interval = setInterval(slideNext, window.innerWidth <= 600 ? 1800 : 2000);
     }
     function stopCarousel() {
         clearInterval(interval);
