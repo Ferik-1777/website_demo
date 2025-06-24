@@ -528,10 +528,13 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: url('./real images/about.jpg') center center/cover no-repeat;
-    opacity: 0.08; /* Lower opacity as requested */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     mix-blend-mode: lighten;
     pointer-events: none;
+    background-image: url('./real images/about.jpg');
+    opacity: 0.08; /* Lower opacity as requested */
 }
 
 .about .container,
@@ -653,10 +656,13 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: url('./real images/contact.jpg') center center/cover no-repeat;
-    opacity: 0.13;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     mix-blend-mode: lighten;
     pointer-events: none;
+    background-image: url('./real images/contact.jpg');
+    opacity: 0.13;
 }
 
 .contact .container,
@@ -1677,10 +1683,13 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: url('./real images/featured products.png') center center/cover no-repeat;
-    opacity: 0.13;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     mix-blend-mode: lighten;
     pointer-events: none;
+    background-image: url('./real images/featured products.png');
+    opacity: 0.13;
 }
 
 .top-selling-section .container, 
@@ -1921,40 +1930,72 @@ img:hover {
     opacity: 1;
 }
 
-/* Hero background image */
-.hero-bg-image {
+/* Background Images - Responsive Base Styles */
+.bg-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: url('./real images/hero.jpg') center center/cover no-repeat;
-    opacity: 0.13;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     mix-blend-mode: lighten;
     pointer-events: none;
 }
 
-.hero-container, .hero-content {
-    position: relative;
-    z-index: 2;
+/* Hero background image */
+.hero-bg-image {
+    background-image: url('./real images/hero.jpg');
+    opacity: 0.13;
 }
 
 /* Products background image */
 .products-bg-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    background: url('./real images/products.png') center center/cover no-repeat;
+    background-image: url('./real images/products.png');
     opacity: 0.13;
-    mix-blend-mode: lighten;
-    pointer-events: none;
 }
 
-.products .container, .section-header, .products-grid, .brand-showcase {
-    position: relative;
-    z-index: 2;
+/* About background image */
+.about-bg-image {
+    background-image: url('./real images/about.jpg');
+    opacity: 0.08; /* Lower opacity as requested */
+}
+
+/* Contact background image */
+.contact-bg-image {
+    background-image: url('./real images/contact.jpg');
+    opacity: 0.13;
+}
+
+/* Top selling background image */
+.top-selling-bg-image {
+    background-image: url('./real images/featured products.png');
+    opacity: 0.13;
+}
+
+/* Mobile Responsive Background Images */
+@media (max-width: 768px) {
+    .hero-bg-image,
+    .products-bg-image,
+    .about-bg-image,
+    .contact-bg-image,
+    .top-selling-bg-image {
+        background-size: 100% 100%;
+        background-position: center center;
+        height: 100%;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-bg-image,
+    .products-bg-image,
+    .about-bg-image,
+    .contact-bg-image,
+    .top-selling-bg-image {
+        background-size: cover;
+        background-attachment: scroll;
+    }
 } 
