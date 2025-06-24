@@ -57,13 +57,16 @@ const observer = new IntersectionObserver((entries) => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
+            if (entry.target.classList.contains('top-selling-card')) {
+                entry.target.classList.add('visible');
+            }
         }
     });
 }, observerOptions);
 
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
-    const animateElements = document.querySelectorAll('.product-card, .feature, .contact-item, .stat, .brand-card');
+    const animateElements = document.querySelectorAll('.product-card, .feature, .contact-item, .stat, .brand-card, .top-selling-card');
     
     animateElements.forEach(el => {
         el.style.opacity = '0';
@@ -160,46 +163,51 @@ window.addEventListener('load', () => {
     }, 100);
 });
 
-// Add active class to current navigation link
+// --- Ultra Smooth Navigation & Performance Optimizations ---
+// Use requestAnimationFrame for nav link highlight
+let lastScrollY = window.scrollY;
+let ticking = false;
+function rafUpdateActiveNavLink() {
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            updateActiveNavLink();
+            ticking = false;
+        });
+        ticking = true;
+    }
+}
+window.removeEventListener('scroll', updateActiveNavLink);
+window.addEventListener('scroll', rafUpdateActiveNavLink, { passive: true });
+// Debounce all scroll/resize events
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+// Use debounced resize for layout updates
+window.addEventListener('resize', debounce(() => {
+    // Any layout update logic here
+}, 120), { passive: true });
+// Optimize DOM queries: cache nav/sections
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('section[id]');
 function updateActiveNavLink() {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link');
-    
     let current = '';
     sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.scrollY >= (sectionTop - 200)) {
+        const sectionTop = section.offsetTop - 120;
+        if (window.scrollY >= sectionTop) {
             current = section.getAttribute('id');
         }
     });
-    
-    // Remove active class from all links first
     navLinks.forEach(link => {
         link.classList.remove('active');
-    });
-    
-    // Add active class only to the current section's link
-    navLinks.forEach(link => {
         if (link.getAttribute('href') === `#${current}`) {
             link.classList.add('active');
         }
     });
 }
-
-window.addEventListener('scroll', updateActiveNavLink);
-
-// Add CSS for active nav link
-const style = document.createElement('style');
-style.textContent = `
-    .nav-link.active {
-        color: var(--royal-blue) !important;
-    }
-    .nav-link.active::after {
-        width: 100% !important;
-    }
-`;
-document.head.appendChild(style);
 
 // Enhanced touch gestures for mobile
 let touchStartX = 0;
@@ -308,52 +316,6 @@ document.querySelectorAll('.feature').forEach(feature => {
     });
 });
 
-// Performance optimization: Debounce scroll events
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Apply debouncing to scroll events
-const debouncedScrollHandler = debounce(() => {
-    updateActiveNavLink();
-}, 10);
-
-window.addEventListener('scroll', debouncedScrollHandler);
-
-// Add subtle background animation
-function createFloatingElements() {
-    const hero = document.querySelector('.hero');
-    if (!hero) return;
-    
-    for (let i = 0; i < 5; i++) {
-        const element = document.createElement('div');
-        element.className = 'floating-element';
-        element.style.cssText = `
-            position: absolute;
-            width: ${Math.random() * 20 + 10}px;
-            height: ${Math.random() * 20 + 10}px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation: float ${Math.random() * 10 + 10}s ease-in-out infinite;
-            pointer-events: none;
-        `;
-        hero.appendChild(element);
-    }
-}
-
-// Initialize floating elements
-document.addEventListener('DOMContentLoaded', createFloatingElements);
-
 // HERO SLIDESHOW
 (function() {
     const slideshow = document.getElementById('heroSlideshow');
@@ -421,6 +383,13 @@ document.addEventListener('DOMContentLoaded', createFloatingElements);
 // Animate brand cards in on load
 window.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.brand-card').forEach((card, i) => {
+        setTimeout(() => card.classList.add('animated'), 100 + i * 120);
+    });
+});
+
+// Animate top-selling cards in on load (like brands)
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.top-selling-card').forEach((card, i) => {
         setTimeout(() => card.classList.add('animated'), 100 + i * 120);
     });
 });
@@ -629,4 +598,98 @@ window.addEventListener('DOMContentLoaded', () => {
     startCarousel();
     carousel.addEventListener('mouseenter', stopCarousel);
     carousel.addEventListener('mouseleave', startCarousel);
+})();
+
+// --- Top Selling Products Modern Carousel (show 1 card at a time, auto-advance, all screens) ---
+(function() {
+    const grid = document.querySelector('.top-selling-grid');
+    if (!grid) return;
+    const cards = Array.from(grid.querySelectorAll('.top-selling-card'));
+    if (cards.length < 2) return;
+    function showCard(idx) {
+        grid.querySelectorAll('.top-selling-card').forEach((card, i) => {
+            if (i === idx) {
+                card.classList.add('center');
+            } else {
+                card.classList.remove('center');
+            }
+        });
+    }
+    let current = 0;
+    showCard(current);
+    let interval = setInterval(() => {
+        current = (current + 1) % cards.length;
+        showCard(current);
+    }, 2500);
+    // Touch swipe support
+    let startX = 0, moved = false;
+    grid.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+        moved = false;
+    });
+    grid.addEventListener('touchmove', e => { moved = true; });
+    grid.addEventListener('touchend', e => {
+        if (!moved) return;
+        const dx = e.changedTouches[0].clientX - startX;
+        if (dx > 40) {
+            current = (current - 1 + cards.length) % cards.length;
+            showCard(current);
+        } else if (dx < -40) {
+            current = (current + 1) % cards.length;
+            showCard(current);
+        }
+    });
+    // Pause/resume on hover
+    grid.addEventListener('mouseenter', () => clearInterval(interval));
+    grid.addEventListener('mouseleave', () => {
+        interval = setInterval(() => {
+            current = (current + 1) % cards.length;
+            showCard(current);
+        }, 2500);
+    });
+})();
+
+// --- Top Selling Product Card Enlarge-on-Click Modal ---
+(function() {
+    const grid = document.querySelector('.top-selling-grid');
+    if (!grid) return;
+    let modalOverlay = null;
+    let enlargedCard = null;
+    function closeModal() {
+        if (modalOverlay) {
+            modalOverlay.remove();
+            modalOverlay = null;
+            enlargedCard = null;
+            document.body.style.overflow = '';
+        }
+    }
+    grid.addEventListener('click', function(e) {
+        const card = e.target.closest('.top-selling-card');
+        if (!card || card.classList.contains('enlarged')) return;
+        // Prevent carousel scroll/drag
+        e.stopPropagation();
+        // Clone the card for modal
+        const cardClone = card.cloneNode(true);
+        cardClone.classList.add('enlarged');
+        // Add close button
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'top-selling-modal-close';
+        closeBtn.innerHTML = '<i class="fas fa-times"></i>';
+        closeBtn.onclick = closeModal;
+        cardClone.appendChild(closeBtn);
+        // Create overlay
+        modalOverlay = document.createElement('div');
+        modalOverlay.className = 'top-selling-modal-overlay';
+        modalOverlay.appendChild(cardClone);
+        modalOverlay.addEventListener('click', function(ev) {
+            if (ev.target === modalOverlay) closeModal();
+        });
+        document.body.appendChild(modalOverlay);
+        document.body.style.overflow = 'hidden';
+        enlargedCard = cardClone;
+    });
+    // ESC key closes modal
+    document.addEventListener('keydown', function(e) {
+        if (modalOverlay && (e.key === 'Escape' || e.key === 'Esc')) closeModal();
+    });
 })(); 

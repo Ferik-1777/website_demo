@@ -381,27 +381,27 @@ body {
 }
 
 .product-link {
-    display: inline-block;
+    font-family: 'Inter', Arial, sans-serif;
     background: var(--light-blue);
     color: var(--dark-blue);
-    font-weight: 700;
-    padding: 0.9rem 2.2rem;
-    border-radius: 30px;
+    font-weight: 600;
     font-size: 1.1rem;
-    text-decoration: none;
-    margin-top: 1.2rem;
-    box-shadow: 0 4px 16px rgba(124,179,222,0.10);
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
-    border: none;
-    outline: none;
-    cursor: pointer;
+    border: 2px solid var(--light-blue);
+    border-radius: 10px;
+    padding: 15px 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-transform: none;
+    letter-spacing: normal;
+    transition: var(--transition);
 }
 
-.product-link:hover, .product-link:active {
-    background: var(--accent-blue) !important;
-    color: var(--white) !important;
-    box-shadow: 0 8px 32px rgba(74,144,226,0.18);
-    transform: translateY(-2px) scale(1.04);
+.product-link:hover, .product-link:active, .product-link:focus-visible {
+    background: var(--deep-blue);
+    color: var(--white);
+    border: 2px solid var(--light-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(124, 179, 222, 0.4);
+    outline: none;
 }
 
 /* Brand Showcase Section */
@@ -1522,32 +1522,32 @@ body {
     .brand-card {
         min-width: 98vw;
         max-width: 99vw;
-        min-height: 60vh;
         margin: 0 auto;
-        padding: 3rem 1.2rem 3rem 1.2rem;
-        box-sizing: border-box;
-        border-radius: 28px;
-        font-size: 1.2rem;
+        padding: 2.2rem 0.7rem 2.2rem 0.7rem;
+        border-radius: 22px;
+        font-size: 1.1rem;
         box-shadow: 0 12px 40px rgba(19,62,135,0.15);
-        background: rgba(255,255,255,0.10);
+        background: #232b45;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        position: relative;
+        z-index: 1;
+        opacity: 1;
+        transform: none;
+        transition: none;
     }
-    .brand-card.peek {
+    .brand-card:not(.center) {
         display: none !important;
     }
-    .brand-card.center {
-        display: flex;
-    }
     .brand-logo {
-        width: 80px;
-        height: 80px;
+        width: 120px;
+        height: 120px;
         margin-bottom: 2rem;
     }
     .brand-content h3 {
-        font-size: 1.7rem;
+        font-size: 1.4rem;
         margin-bottom: 1rem;
     }
     .brand-content p {
@@ -1610,4 +1610,226 @@ body {
         min-width: 90px !important;
         min-height: 90px !important;
     }
+}
+
+/* Top Selling Products Section - Modern color theme and smaller images */
+.top-selling-section {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid #2a3140;
+    background: linear-gradient(135deg, #181d2f 0%, #232b45 100%); /* deep navy blend */
+}
+
+.top-selling-section .section-header h2 {
+    color: #ffe066; /* pale yellow */
+    text-shadow: 0 2px 10px rgba(24,29,47,0.4);
+}
+
+.top-selling-section .section-header p {
+    color: #b3c6e0; /* soft blue */
+    opacity: 1;
+    font-weight: 500;
+}
+
+.top-selling-grid {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    gap: 0;
+    padding-bottom: 0;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    min-height: 60vh;
+}
+.top-selling-card {
+    min-width: 98vw;
+    max-width: 99vw;
+    margin: 0 auto;
+    padding: 2.2rem 0.7rem 2.2rem 0.7rem;
+    border-radius: 22px;
+    font-size: 1.1rem;
+    box-shadow: 0 12px 40px rgba(19,62,135,0.15);
+    background: #232b45;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
+.top-selling-card:not(.center) {
+    display: none !important;
+}
+.top-selling-image {
+    width: 18vw;
+    height: 18vw;
+    max-width: 160px;
+    max-height: 160px;
+    min-width: 80px;
+    min-height: 80px;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7f8fa;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(192,192,192,0.13);
+    overflow: hidden;
+}
+.top-selling-image img {
+    width: 90%;
+    height: 90%;
+    max-width: 140px;
+    max-height: 140px;
+    min-width: 60px;
+    min-height: 60px;
+    object-fit: contain;
+    display: block;
+}
+.top-selling-content h3 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+.top-selling-content p {
+    font-size: 1.15rem;
+    line-height: 1.6;
+}
+
+/* Enlarged card modal effect */
+.top-selling-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(20, 24, 40, 0.85);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInModal 0.3s;
+}
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.top-selling-card.enlarged {
+    position: relative;
+    z-index: 2100;
+    width: 95vw;
+    max-width: 420px;
+    min-width: 320px;
+    min-height: 420px;
+    background: #232b45;
+    box-shadow: 0 16px 64px 0 rgba(0,0,0,0.45);
+    border-radius: 28px;
+    transform: scale(1.12) !important;
+    transition: transform 0.35s cubic-bezier(.19,1,.22,1), box-shadow 0.35s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1.5rem 2.5rem 1.5rem;
+    cursor: default;
+    outline: 4px solid #ffe066;
+    outline-offset: 0px;
+    box-shadow: 0 16px 64px 0 rgba(0,0,0,0.45), 0 0 0 4px #ffe066;
+    border: 2.5px solid #ffe066;
+    animation: cardOutlineGlow 0.7s cubic-bezier(.19,1,.22,1);
+}
+@keyframes cardOutlineGlow {
+    0% { outline-color: #fffbe0; box-shadow: 0 0 0 0 #ffe066; }
+    60% { outline-color: #ffe066; box-shadow: 0 0 0 8px #ffe06644; }
+    100% { outline-color: #ffe066; box-shadow: 0 16px 64px 0 rgba(0,0,0,0.45), 0 0 0 4px #ffe066; }
+}
+.top-selling-modal-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    font-size: 2rem;
+    color: #ffe066;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 2200;
+    transition: color 0.2s;
+}
+.top-selling-modal-close:hover {
+    color: #fff;
+}
+
+@media (max-width: 900px) {
+    .top-selling-image {
+        width: 28vw;
+        height: 28vw;
+        max-width: 120px;
+        max-height: 120px;
+        min-width: 60px;
+        min-height: 60px;
+    }
+    .top-selling-image img {
+        max-width: 100px;
+        max-height: 100px;
+        min-width: 40px;
+        min-height: 40px;
+    }
+}
+@media (max-width: 600px) {
+    .top-selling-image {
+        width: 38vw;
+        height: 38vw;
+        max-width: 90px;
+        max-height: 90px;
+        min-width: 36px;
+        min-height: 36px;
+    }
+    .top-selling-image img {
+        max-width: 70px;
+        max-height: 70px;
+        min-width: 28px;
+        min-height: 28px;
+    }
+}
+
+.top-selling-link {
+    /* Inherit all .btn styles for visual consistency */
+    @extend .btn;
+    /* If @extend is not supported, duplicate .btn styles: */
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background: var(--light-blue);
+    color: var(--dark-blue);
+    border: 2px solid var(--light-blue);
+}
+.top-selling-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+.top-selling-link:hover::before {
+    left: 100%;
+}
+.top-selling-link:hover, .top-selling-link:focus-visible {
+    background: var(--deep-blue);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(124, 179, 222, 0.4);
+    border: 2px solid var(--light-blue);
 } 
