@@ -63,7 +63,7 @@ const observer = new IntersectionObserver((entries) => {
 
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
-    const animateElements = document.querySelectorAll('.product-card, .feature, .contact-item, .stat');
+    const animateElements = document.querySelectorAll('.product-card, .feature, .contact-item, .stat, .brand-card');
     
     animateElements.forEach(el => {
         el.style.opacity = '0';
@@ -416,4 +416,145 @@ document.addEventListener('DOMContentLoaded', createFloatingElements);
     // Init
     goToSlide(0);
     resetInterval();
+})();
+
+// Animate brand cards in on load
+window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.brand-card').forEach((card, i) => {
+        setTimeout(() => card.classList.add('animated'), 100 + i * 120);
+    });
+});
+
+// --- Brand Carousel: Seamless Right-to-Left Animation ---
+(function() {
+    const carousel = document.querySelector('.brands-carousel');
+    const grid = carousel ? carousel.querySelector('.brands-grid') : null;
+    if (!carousel || !grid) return;
+    // Gather all brand data from the initial DOM
+    const allBrandCards = Array.from(grid.querySelectorAll('.brand-card'));
+    const brands = allBrandCards.map(card => {
+        const img = card.querySelector('img');
+        const name = card.querySelector('h3')?.textContent || '';
+        const desc = card.querySelector('p')?.textContent || '';
+        const src = img ? img.getAttribute('src') : null;
+        return { src, name, desc };
+    });
+    // Helper to create a card element
+    function createBrandCard(brand, extraClass = '') {
+        const card = document.createElement('div');
+        card.className = 'brand-card' + (extraClass ? ' ' + extraClass : '');
+        const logo = document.createElement('div');
+        logo.className = 'brand-logo';
+        if (brand.src) {
+            const img = document.createElement('img');
+            img.src = brand.src;
+            img.alt = brand.name;
+            img.loading = 'lazy';
+            img.onerror = function() {
+                this.style.display = 'none';
+                if (!logo.querySelector('.brand-fallback')) {
+                    const fallback = document.createElement('span');
+                    fallback.className = 'brand-fallback';
+                    fallback.innerHTML = '<i class="fas fa-mobile-alt"></i>';
+                    logo.appendChild(fallback);
+                }
+            };
+            logo.appendChild(img);
+        } else {
+            const fallback = document.createElement('span');
+            fallback.className = 'brand-fallback';
+            fallback.innerHTML = '<i class="fas fa-mobile-alt"></i>';
+            logo.appendChild(fallback);
+        }
+        const content = document.createElement('div');
+        content.className = 'brand-content';
+        const h3 = document.createElement('h3');
+        h3.textContent = brand.name;
+        const p = document.createElement('p');
+        p.textContent = brand.desc;
+        content.appendChild(h3);
+        content.appendChild(p);
+        card.appendChild(logo);
+        card.appendChild(content);
+        return card;
+    }
+    // Carousel state
+    let current = 0;
+    let interval;
+    let isTransitioning = false;
+    // Render 3 cards: prev, current, next
+    function render(peekTransition = false) {
+        grid.innerHTML = '';
+        const prevIdx = (current - 1 + brands.length) % brands.length;
+        const nextIdx = (current + 1) % brands.length;
+        const prevCard = createBrandCard(brands[prevIdx], 'peek');
+        const currCard = createBrandCard(brands[current], 'center');
+        const nextCard = createBrandCard(brands[nextIdx], 'peek');
+        grid.appendChild(prevCard);
+        grid.appendChild(currCard);
+        grid.appendChild(nextCard);
+        grid.style.display = 'flex';
+        grid.style.justifyContent = 'center';
+        grid.style.alignItems = 'center';
+        grid.style.transition = peekTransition ? 'transform 0.5s cubic-bezier(.19,1,.22,1)' : 'none';
+        grid.style.transform = 'translateX(-33.33%)';
+    }
+    // Animate to next card
+    function slideNext() {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        grid.style.transition = 'transform 0.5s cubic-bezier(.19,1,.22,1)';
+        grid.style.transform = 'translateX(-66.66%)';
+        setTimeout(() => {
+            current = (current + 1) % brands.length;
+            render(false);
+            isTransitioning = false;
+        }, 500);
+    }
+    // Animate to previous card
+    function slidePrev() {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        grid.style.transition = 'transform 0.5s cubic-bezier(.19,1,.22,1)';
+        grid.style.transform = 'translateX(0%)';
+        setTimeout(() => {
+            current = (current - 1 + brands.length) % brands.length;
+            render(false);
+            isTransitioning = false;
+        }, 500);
+    }
+    function startCarousel() {
+        interval = setInterval(slideNext, window.innerWidth < 600 ? 1500 : 2000);
+    }
+    function stopCarousel() {
+        clearInterval(interval);
+    }
+    // Touch/swipe support for mobile
+    let startX = 0;
+    let moved = false;
+    grid.addEventListener('touchstart', e => {
+        stopCarousel();
+        startX = e.touches[0].clientX;
+        moved = false;
+    });
+    grid.addEventListener('touchmove', e => {
+        moved = true;
+    });
+    grid.addEventListener('touchend', e => {
+        if (!moved) return;
+        const dx = e.changedTouches[0].clientX - startX;
+        if (dx > 40) {
+            slidePrev();
+        } else if (dx < -40) {
+            slideNext();
+        }
+        startCarousel();
+    });
+    window.addEventListener('resize', () => {
+        render(false);
+    });
+    render(false);
+    startCarousel();
+    carousel.addEventListener('mouseenter', stopCarousel);
+    carousel.addEventListener('mouseleave', startCarousel);
 })(); 
