@@ -534,7 +534,7 @@ body {
     mix-blend-mode: lighten;
     pointer-events: none;
     background-image: url('./real images/about.jpg');
-    opacity: 0.08; /* Lower opacity as requested */
+    opacity: 0.20; /* Increased from 0.15 for better visibility */
 }
 
 .about .container,
@@ -662,7 +662,7 @@ body {
     mix-blend-mode: lighten;
     pointer-events: none;
     background-image: url('./real images/contact.jpg');
-    opacity: 0.13;
+    opacity: 0.22;
 }
 
 .contact .container,
@@ -1689,7 +1689,7 @@ body {
     mix-blend-mode: lighten;
     pointer-events: none;
     background-image: url('./real images/featured products.png');
-    opacity: 0.13;
+    opacity: 0.22;
 }
 
 .top-selling-section .container, 
@@ -1948,31 +1948,31 @@ img:hover {
 /* Hero background image */
 .hero-bg-image {
     background-image: url('./real images/hero.jpg');
-    opacity: 0.13;
+    opacity: 0.22;
 }
 
 /* Products background image */
 .products-bg-image {
     background-image: url('./real images/products.png');
-    opacity: 0.13;
+    opacity: 0.22;
 }
 
 /* About background image */
 .about-bg-image {
     background-image: url('./real images/about.jpg');
-    opacity: 0.08; /* Lower opacity as requested */
+    opacity: 0.20; /* Increased from 0.15 for better visibility */
 }
 
 /* Contact background image */
 .contact-bg-image {
     background-image: url('./real images/contact.jpg');
-    opacity: 0.13;
+    opacity: 0.22;
 }
 
 /* Top selling background image */
 .top-selling-bg-image {
     background-image: url('./real images/featured products.png');
-    opacity: 0.13;
+    opacity: 0.22;
 }
 
 /* Mobile Responsive Background Images */
@@ -1998,4 +1998,43 @@ img:hover {
         background-size: cover;
         background-attachment: scroll;
     }
+}
+
+/* Section Content Z-index Positioning */
+.hero-container, 
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.products .container, 
+.section-header, 
+.products-grid, 
+.brand-showcase {
+  position: relative;
+  z-index: 2;
+}
+
+.about .container,
+.about-content,
+.about-text,
+.features,
+.about-image {
+  position: relative;
+  z-index: 2;
+}
+
+.contact .container,
+.contact .section-header,
+.contact-info-grid,
+.floating-contact-icons {
+  position: relative;
+  z-index: 2;
+}
+
+.top-selling-section .container, 
+.top-selling-section .section-header, 
+.top-selling-grid {
+  position: relative;
+  z-index: 2;
 } 
